@@ -18,7 +18,7 @@ void swap(int arr[],int a,int b){
     arr[b]=temp;
 }
 
-void heapify(int arr[],int i,int larr){
+int heapify(int arr[],int i,int larr,int cnt){
     int largest=i;
     int lele=2*i+1;
     int rele=2*i+2;
@@ -28,26 +28,29 @@ void heapify(int arr[],int i,int larr){
     if (rele<larr && arr[rele]>arr[largest]){
         largest=rele;
     }
-
+    cnt=cnt+2;
     if (largest!=i){
         swap(arr,i,largest);
-        heapify(arr,largest,larr);
+        heapify(arr,largest,larr,cnt);
     }
+    return cnt;
 }
 
-void mhp(int arr[],int n){
+int mhp(int arr[],int n,int cnt){
     for (int i = n/2-1; i >= 0; i--)
     {
-        heapify(arr,i,n);
+        cnt=cnt+heapify(arr,i,n,0);
     }
+    return cnt;
 }
 
-void heapsort(int arr[],int n){
-    mhp(arr,n);
+int heapsort(int arr[],int n){
+    int cnt=mhp(arr,n,cnt);
     for(int i=n-1;i>-1;i--){
         swap(arr,0,i);
-        heapify(arr,0,i);
+        cnt=heapify(arr,0,i,cnt);
     }
+    return cnt;
 }
 
 int main(){
@@ -59,9 +62,11 @@ int main(){
         scanf("%d",&k);
         arr[i]=k;
     }
-    heapsort(arr,n);
+    int cnt=heapsort(arr,n);
     for(int i=0;i<n;i++){
         printf("%d ",arr[i]);
     }
+    printf("\n");
+    printf("%d",cnt);
     return 0;
 }
