@@ -1,0 +1,4 @@
+Command failed: g++ -o "/home/gautham/College_programming/stress_tests/brute.out" "/home/gautham/College_programming/brute.cpp" -std=c++14
+/usr/bin/ld: /usr/lib/gcc/x86_64-redhat-linux/11/../../../../lib64/crt1.o: in function `_start':
+(.text+0x24): undefined reference to `main'
+collect2: error: ld returned 1 exit status
