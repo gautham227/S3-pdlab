@@ -4,69 +4,80 @@
 #include <math.h>
 #include <stdlib.h>
 
-int size(int arr[]){
-    int s=0;
-    while(arr[s]!=10001){
-        s++;
-    }
-    return s;
-}
+struct S{
+    int student_id;
+    char student_name[21];
+    int rank;
+};
 
-void swap(int arr[],int a,int b){
-    int temp=arr[a];
+void swap(struct S* arr,int a,int b){
+    struct S temp=arr[a];
     arr[a]=arr[b];
     arr[b]=temp;
 }
 
-void max_heapify(int arr[], int i,int n){
-    int left=2*i+1;
-    int right=2*i+2;
+void heapify(struct S* arr,int i,int larr){
     int largest=i;
-    if (left<n && arr[left]>arr[i]){
-        largest=left;
+    int lele=2*i+1;
+    int rele=2*i+2;
+    if(lele<larr && arr[lele].rank>arr[largest].rank){
+        largest=lele;
     }
-    if (right<n && arr[right]>arr[largest]){
-        largest=right;
+    if (rele<larr && arr[rele].rank>arr[largest].rank){
+        largest=rele;
     }
     if (largest!=i){
         swap(arr,i,largest);
-        max_heapify(arr,largest,n);
+        heapify(arr,largest,larr);
     }
 }
 
-void bmh(int arr[]){
-    int hsize=size(arr);
-    for (int i=(((int)hsize)/2)-1;i>-1;i--)
+void mhp(struct S* arr,int n){
+    for (int i = n/2-1; i >= 0; i--)
     {
-        max_heapify(arr,i,hsize);
+        heapify(arr,i,n);
     }
 }
 
-void heapsrt(int arr[]){
-    bmh(arr);
-    int sz=size(arr);
-    for (int i = sz/2-1; i >= 0; i--)
-    {
-        swap(arr,0,i);
-        max_heapify(arr,0,sz);
-    }
-    
+struct S* ENTER(struct S* arr,int len){
+    arr=(struct S*)realloc(arr,(len+1)*sizeof(struct S));
+    scanf("%d",&arr[len].student_id);
+    scanf("%s",&arr[len].student_name);
+    int k;
+    scanf("%d",&k);
+    arr[len].rank=k*(-1);
+    mhp(arr,len+1);
+    return arr;
 }
 
 int main(){
-    int n;
-    scanf("%d",&n);
-    int arr[n+1];
-    for (int i = 0; i < n; i++)
-    {
-        int k;
-        scanf("%d",&k);
-        arr[i]=k;
+    struct S* arr;
+    int len=0;
+    arr=(struct S*)malloc(sizeof(struct S));
+    char c='a';
+    while(c!='t'){
+        scanf("%c",&c);
+        switch (c)
+        {
+        case 'e':
+            arr=ENTER(arr,len);
+            len++;
+            break;
+        // case 'i':
+        //     INTERVIEW(arr);
+        //     break;
+        // case 'l':
+        //     LIST(arr);
+        //     break;
+        case 't':
+            break;
+        }
     }
-    arr[n]=10001;
-    heapsrt(arr);
-    for (int i = 0; i < n; i++)
+    for (int i = 0; i < len; i++)
     {
-        printf("%d ",arr[i]);
+        printf("%d ",arr[i].student_id);
+        printf("%s ",arr[i].student_name);
+        printf("%d ",arr[i].rank);
     }
+    
 }
