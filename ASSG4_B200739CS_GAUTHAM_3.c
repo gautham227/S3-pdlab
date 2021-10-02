@@ -64,7 +64,11 @@ struct amoeba* INSERT(struct amoeba* arr,struct amoeba ele,int n){
 struct amoeba* hpinsert(struct amoeba* arr,struct amoeba ele,int len){
     strcpy(arr[len].amoeba_Name,ele.amoeba_Name);
     arr[len].amoeba_size=ele.amoeba_size;
-    mhp(arr,len+1);
+    int i=len;
+    while(i>0 && arr[i/2].amoeba_size<arr[i].amoeba_size){
+        swap(arr,i,i/2);
+        i=i/2;
+    }
     return arr;
 }
 
