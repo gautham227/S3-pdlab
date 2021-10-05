@@ -40,7 +40,7 @@ void mhp(struct amoeba* arr,int n){
 
 struct amoeba* srtname(struct amoeba* arr,int n){
     for(int i=1;i<n;i++){
-        if (arr[0].amoeba_size==arr[i].amoeba_size && arr[i].amoeba_Name<arr[0].amoeba_Name){
+        if (arr[0].amoeba_size==arr[i].amoeba_size && strcmp(arr[0].amoeba_Name,arr[i].amoeba_Name)>0){
             swap(arr,0,i);
         }
     }
@@ -65,7 +65,7 @@ struct amoeba* hpinsert(struct amoeba* arr,struct amoeba ele,int len){
     strcpy(arr[len].amoeba_Name,ele.amoeba_Name);
     arr[len].amoeba_size=ele.amoeba_size;
     int i=len;
-    while(i>0 && arr[i/2].amoeba_size<arr[i].amoeba_size){
+    while(i>=0 && arr[i/2].amoeba_size<arr[i].amoeba_size){
         swap(arr,i,i/2);
         i=i/2;
     }
@@ -85,19 +85,20 @@ struct amoeba* COMBINE(struct amoeba* arr,int n){
         strcpy(ans.amoeba_Name,arr[0].amoeba_Name);
         ans.amoeba_size=arr[0].amoeba_size;
         printf("%s ",arr[0].amoeba_Name);
-        hpdelete(arr,n);
+        arr=hpdelete(arr,n);
         n--;
         ans.amoeba_size=ans.amoeba_size+arr[0].amoeba_size;
         printf("%s ",arr[0].amoeba_Name);
-        hpdelete(arr,n);
+        arr=hpdelete(arr,n);
         n--;
-        hpinsert(arr,ans,n);
+        arr=hpinsert(arr,ans,n);
         n++;
         printf("%d",ans.amoeba_size*(-1));
         printf("\n");
     }
     printf("%s ",arr[0].amoeba_Name);
     printf("%d\n",arr[0].amoeba_size*(-1));
+    return  arr;
 }
 int main(){
     struct amoeba* arr;
