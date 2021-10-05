@@ -42,7 +42,7 @@ int * INSERT_PATIENT(int* arr,int n,int k){
 
 int * EXTRACT_NEXT_PATIENT(int *arr,int* n){
     if (*n==0){
-        printf("%d",-1);
+        printf("%d\n",-1);
     }
     else{
         printf("%d\n",arr[0]*(-1));
@@ -113,9 +113,6 @@ int main(){
         case 's':
             break;
         }
-    }
-    for(int i=0;i<n;i++){
-        printf("%d ",arr[i]);
     }
     return 0;
 }

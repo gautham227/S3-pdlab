@@ -69,6 +69,7 @@ struct amoeba* hpinsert(struct amoeba* arr,struct amoeba ele,int len){
         swap(arr,i,i/2);
         i=i/2;
     }
+    srtname(arr,len+1);
     return arr;
 }
 
