@@ -4,26 +4,26 @@
 #include <math.h>
 #include <stdlib.h>
 
-struct node{
-    int key;
-    struct node* next;
+struct nod{
+    char key;
+    struct nod* next;
 };
-typedef struct node* node;
+typedef struct nod* node;
 
-struct sll{
+struct sl{
     node head;
 };
-typedef struct sll* sll;
+typedef struct sl* sll;
 
-node CREATE_NODE(int k){
-    node new;
-    new=(node)malloc(sizeof(node));
-    new->key=k;
-    new->next=NULL;
-    return new;
+node CREATE_NODE(char k){
+    node ne;
+    ne=(node)malloc(sizeof(node));
+    ne->key=k;
+    ne->next=NULL;
+    return ne;
 }
 
-node LIST_SEARCH(sll ll,long int k){
+node LIST_SEARCH(sll ll,char k){
     node present;
     present=ll->head;
     int flag=0;
@@ -31,6 +31,7 @@ node LIST_SEARCH(sll ll,long int k){
         if(present->key==k){
             flag=1;
             return present;
+            break;
         }
         else{
             present=present->next;
@@ -39,43 +40,46 @@ node LIST_SEARCH(sll ll,long int k){
     if(flag==0){
         return NULL;
     }
+    else{
+        return present;
+    }
 }
 
 void LIST_INSERT_FRONT(sll ll,node x){
-    node new;
-    long int no;
-    scanf("%ld",&no);
-    new=CREATE_NODE(no);
-    new->next=ll->head;
-    ll->head=new;
+    node ne;
+    char no;
+    scanf("%c",&no);
+    ne=CREATE_NODE(no);
+    ne->next=ll->head;
+    ll->head=ne;
 }
 
 void LIST_INSERT_TAIL(sll ll,node x){
-    node new;
-    long int no;
-    scanf("%d",&no);
-    new=CREATE_NODE(no);
+    node ne;
+    char no;
+    scanf("%c",&no);
+    ne=CREATE_NODE(no);
     node present;
     present=ll->head;
     if(present==NULL){
-        ll->head=new;
+        ll->head=ne;
     }
     else{
         while(present->next!=NULL){
             present=present->next;
         }
-        present->next=new;
+        present->next=ne;
     }
 }
 
 void LIST_INSERT_AFTER(sll ll,node x,node y){
-    long int newkey;
-    long int keybef;
-    scanf("%ld",&newkey);
-    scanf("%ld",&keybef);
+    char nekey;
+    char keybef;
+    scanf("%c ",&nekey);
+    scanf("%c",&keybef);
     y=LIST_SEARCH(ll,keybef);
     if(y!=NULL){
-        x=CREATE_NODE(newkey);
+        x=CREATE_NODE(nekey);
         x->next=y->next;
         y->next=x;
     }
@@ -85,35 +89,32 @@ void LIST_INSERT_AFTER(sll ll,node x,node y){
 }
 
 void LIST_INSERT_BEFORE(sll ll, node x, node y){
-    long int newkey;
-    long int keyaft;
-    scanf("%ld",&newkey);
-    scanf("%ld",&keyaft);
+    char nekey;
+    char keyaft;
+    scanf("%c ",&nekey);
+    scanf("%c",&keyaft);
     y=LIST_SEARCH(ll,keyaft);
     node select; // node before y
     select=ll->head;
     while(select->next!=y){
         select=select->next;
     }
-    x=CREATE_NODE(newkey);
+    x=CREATE_NODE(nekey);
     x->next=select->next;
     select->next=x;
 }
 
 void LIST_DELETE(sll ll,node x){
-    long int key;
-    scanf("%ld",&key);
+    char key;
+    scanf("%c",&key);
     x=LIST_SEARCH(ll,key);
-    if(x==ll->head){
-        node present;
-        present=ll->head;
-        ll->head=present->next;
-        printf("%ld\n",key);
-    }
-    else if (x==NULL){
+    if (x==NULL){
         printf("%d\n",-1);
     }
-    else{
+    else if(x->next==NULL){
+        printf("%d\n",-2);
+    }
+    else if(x!=ll->head){
         node present;
         present=ll->head;
         while(present!=NULL){
@@ -122,11 +123,16 @@ void LIST_DELETE(sll ll,node x){
             }
             else{
                 present->next=x->next;
+                printf("%c\n",present->next->key);
             }
-            printf("%ld\n",key);
         }
     }
-
+    else{
+        node present;
+        present=ll->head;
+        ll->head=present->next;
+        printf("%c\n",ll->head->key);
+    }
 }
 
 void LIST_DELETE_FIRST(sll ll){
@@ -136,7 +142,7 @@ void LIST_DELETE_FIRST(sll ll){
         printf("-1\n");
     }
     else{
-        printf("%ld",present->key);
+        printf("%c\n",present->key);
         ll->head=present->next;
     }
 }
@@ -160,8 +166,8 @@ void LIST_DELETE_LAST(sll ll){
         if(present==ll->head){
             ll->head=NULL;
         }
-        long int ans=present->key;
-        printf("%ld",ans);
+        char ans=present->key;
+        printf("%c\n",ans);
     }
 }
 
@@ -169,9 +175,10 @@ void PRINT_LIST(sll ll){
     node present;
     present=ll->head;
     while(present!=NULL){
-        long int ans;
+        char ans;
         ans=present->key;
-        printf("%ld ",ans);
+        printf("%c ",ans);
+        present=present->next;
     }
     printf("\n");
 }
@@ -183,7 +190,7 @@ int main(){
     ll=(sll)malloc(sizeof(sll));
     char c='a';
     while(c!='e'){
-        scanf("%c",&c);
+        scanf("%c ",&c);
         switch (c)
         {
         case 'f':
