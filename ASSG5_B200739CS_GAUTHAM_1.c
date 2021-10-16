@@ -113,6 +113,24 @@ void LIST_DELETE(sll ll,node x){
     }
     else if(x->next==NULL){
         printf("%d\n",-2);
+        node present;
+        node prevele;
+        present=ll->head;
+        if(present->key==key){
+            ll->head=NULL;
+            return;
+        }
+        while(present->next->next!=NULL){
+            present=present->next;
+        }
+        prevele=present;
+        present=present->next;
+        if(prevele!=NULL){
+            prevele->next=NULL;
+        }
+        if(present==ll->head){
+            ll->head=NULL;
+        }
     }
     else if(x!=ll->head){
         node present;
