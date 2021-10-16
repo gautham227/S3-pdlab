@@ -83,9 +83,9 @@ void LIST_INSERT_AFTER(sll ll,node x,node y){
         x->next=y->next;
         y->next=x;
     }
-    // else if(y==NULL){
-    //     exit(0);
-    // }
+    else if(y==NULL){
+        exit(0);
+    }
 }
 
 void LIST_INSERT_BEFORE(sll ll, node x, node y){
@@ -99,9 +99,18 @@ void LIST_INSERT_BEFORE(sll ll, node x, node y){
     while(select->next!=y){
         select=select->next;
     }
+    if(y==NULL){
+        exit(0);
+    }
     x=CREATE_NODE(nekey);
-    x->next=select->next;
-    select->next=x;
+    if(y!=ll->head){
+        x->next=select->next;
+        select->next=x;
+    }
+    else{
+        x->next=y;
+        ll->head=x;
+    }
 }
 
 void LIST_DELETE(sll ll,node x){
