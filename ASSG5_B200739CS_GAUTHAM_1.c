@@ -94,17 +94,17 @@ void LIST_INSERT_BEFORE(sll ll, node x, node y){
     scanf("%c ",&nekey);
     scanf("%c",&keyaft);
     y=LIST_SEARCH(ll,keyaft);
+    if(y==NULL){
+        exit(0);
+    }
     node select; // node before y
     select=ll->head;
     while(select->next!=y){
         select=select->next;
     }
-    if(y==NULL){
-        exit(0);
-    }
     x=CREATE_NODE(nekey);
     if(y!=ll->head){
-        x->next=select->next;
+        x->next=y;
         select->next=x;
     }
     else{
@@ -129,11 +129,10 @@ void LIST_DELETE(sll ll,node x){
             ll->head=NULL;
             return;
         }
-        while(present->next->next!=NULL){
+        while(present->next!=NULL){
+            prevele=present;
             present=present->next;
         }
-        prevele=present;
-        present=present->next;
         if(prevele!=NULL){
             prevele->next=NULL;
         }
@@ -170,6 +169,10 @@ void LIST_DELETE_FIRST(sll ll){
     }
     else{
         printf("%c\n",present->key);
+        if(present->next==NULL){
+            ll->head=NULL;
+            return;
+        }
         ll->head=present->next;
     }
 }
@@ -182,6 +185,12 @@ void LIST_DELETE_LAST(sll ll){
         node present;
         node prevele=NULL;
         present=ll->head;
+        if(present->next==NULL){
+            char ans=present->key;
+            printf("%c\n",ans);
+            ll->head=NULL;
+            return;
+        }
         while(present->next!=NULL){
             prevele=present;
             present=present->next;
