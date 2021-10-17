@@ -106,24 +106,9 @@ void LIST_INSERT_BEFORE(dll ll, node x, node y){
     scanf("%ld ",&nekey);
     scanf("%ld",&keyaft);
     y=LIST_SEARCH(ll,keyaft);
-    // node select; // node before y
-    // select=ll->head;
-    // while(select->next!=y){
-    //     select=select->next;
-    // }
-    // x=CREATE_NODE(nekey);
-    // x->next=select->next;
-    // select->next=x;
-    // x->prev=select;
-    // select->next->prev=x;
     if(y==NULL){
         exit(0);
     }
-    node select; // node before y
-    // select=ll->head;
-    // while(select->next!=y){
-    //     select=select->next;
-    // }
     x=CREATE_NODE(nekey);
     if(y!=ll->head){
         x->next=y;
@@ -148,6 +133,23 @@ void LIST_DELETE(dll ll,node x){
     }
     else if(x->next==NULL){
         printf("NULL\n");
+        node present;
+        node prevele=NULL;
+        present=ll->head;
+        if(present->key==key){
+            ll->head=NULL;
+            return;
+        }
+        while(present->next!=NULL){
+            prevele=present;
+            present=present->next;
+        }
+        if(prevele!=NULL){
+            prevele->next=NULL;
+        }
+        if(present==ll->head){
+            ll->head=NULL;
+        }
     }
     else if(x!=ll->head){
         node present;
@@ -158,7 +160,8 @@ void LIST_DELETE(dll ll,node x){
             }
             else{
                 present->next=x->next;
-                printf("%c\n",present->next->key);
+                x->next->prev=present;
+                printf("%ld\n",present->next->key);
             }
         }
     }
@@ -166,10 +169,88 @@ void LIST_DELETE(dll ll,node x){
         node present;
         present=ll->head;
         ll->head=present->next;
-        printf("%c\n",ll->head->key);
+        present->prev=NULL;
+        printf("%ld\n",ll->head->key);
     }
 }
 
+void LIST_DELETE_INITIAL(dll ll){
+    node present;
+    present=ll->head;
+    if(present==NULL){
+        printf("Not Found\n");
+    }
+    else{
+        printf("%ld\n",present->key);
+        if(present->next==NULL){
+            ll->head=NULL;
+            return;
+        }
+        ll->head=present->next;
+    }
+}
+
+void LIST_DELETE_LAST(dll ll){
+    if(ll->head==NULL){
+        printf("Not Found\n");
+    }
+    else{
+        node present;
+        node prevele=NULL;
+        present=ll->head;
+        if(present->next==NULL){
+            long int ans=present->key;
+            printf("%ld\n",ans);
+            if(present->prev!=NULL){
+                present->prev->next=NULL;
+                return;
+            }
+            ll->head=NULL;
+            return;
+        }
+        while(present->next!=NULL){
+            prevele=present;
+            present=present->next;
+        }
+        if(prevele!=NULL){
+            prevele->next=NULL;
+        }
+        if(present==ll->head){
+            ll->head=NULL;
+        }
+        long int ans=present->key;
+        printf("%ld\n",ans);
+    }
+}
+
+void PRINT_REVERSE(dll ll,int k){
+    node present;
+    present=ll->head;
+    int flag=0;
+    if(present==NULL){
+        printf("Not Found\n");
+        return;
+    }
+    while(present!=NULL){
+        if(present->key==k){
+            flag=1;
+            break;
+        }
+        else{
+            present=present->next;
+        }
+    }
+    if(flag==0){
+        printf("Not Found\n");
+    }
+    else{
+        while(present!=NULL){
+            printf("%ld ",present->key);
+            present=present->prev;
+        }
+        printf("\n");
+    }
+}
 
 int main(){
     dll ll;
