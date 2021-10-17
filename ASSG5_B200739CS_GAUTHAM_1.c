@@ -180,13 +180,12 @@ void LIST_DELETE_LAST(sll ll){
     }
     else{
         node present;
-        node prevele;
+        node prevele=NULL;
         present=ll->head;
-        while(present->next->next!=NULL){
+        while(present->next!=NULL){
+            prevele=present;
             present=present->next;
         }
-        prevele=present;
-        present=present->next;
         if(prevele!=NULL){
             prevele->next=NULL;
         }
@@ -201,6 +200,10 @@ void LIST_DELETE_LAST(sll ll){
 void PRINT_LIST(sll ll){
     node present;
     present=ll->head;
+    if(ll->head==NULL){
+        printf("NULL\n");
+        return;
+    }
     while(present!=NULL){
         char ans;
         ans=present->key;
