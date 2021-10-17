@@ -123,7 +123,7 @@ void LIST_DELETE(sll ll,node x){
     else if(x->next==NULL){
         printf("%d\n",-2);
         node present;
-        node prevele;
+        node prevele=NULL;
         present=ll->head;
         if(present->key==key){
             ll->head=NULL;
