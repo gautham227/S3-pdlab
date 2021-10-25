@@ -288,21 +288,36 @@ void solve(graph g,graph temp,int x,int n,sll ll,int no){
                 g->arr[v][y]++;
                 g->arr[y][v]++;
                 node p=LIST_SEARCH_LAST(ll,u,v);
-                if (p==NULL){
-                    p=LIST_SEARCH_LAST(ll,v,u);
-                }
-                p->key1=u;
-                p->key2=y;
-                if(newarr[y]>0){
-                    for(int i=0;i<newarr[y]/2;i++){
-                    LIST_INSERT_AFTER(ll,u,y,y,y);
+                if (p!=NULL){
+                    p->key1=u;
+                    p->key2=y;
+                    if(newarr[y]>0){
+                        for(int i=0;i<newarr[y]/2;i++){
+                            LIST_INSERT_AFTER(ll,u,y,y,y);
+                        }
+                        newarr[y]=0;
+                        node xyz=LIST_SEARCH_LOOPS(ll,y,y);
+                        LIST_INSERT_AFTER_LOOPS(ll,y,y,y,v);
                     }
-                    newarr[y]=0;
-                    node xyz=LIST_SEARCH_LOOPS(ll,y,y);
-                    LIST_INSERT_AFTER_LOOPS(ll,y,y,y,v);
+                    else{
+                        LIST_INSERT_AFTER(ll,u,y,y,v);
+                    }
                 }
                 else{
-                    LIST_INSERT_AFTER(ll,u,y,y,v);
+                    p=LIST_SEARCH_LAST(ll,v,u);
+                    p->key1=v;
+                    p->key2=y;
+                    if(newarr[y]>0){
+                        for(int i=0;i<newarr[y]/2;i++){
+                            LIST_INSERT_AFTER(ll,v,y,y,y);
+                        }
+                        newarr[y]=0;
+                        node xyz=LIST_SEARCH_LOOPS(ll,y,y);
+                        LIST_INSERT_AFTER_LOOPS(ll,y,y,y,u);
+                    }
+                    else{
+                        LIST_INSERT_AFTER(ll,v,y,y,u);
+                    }
                 }
                 u=-1;
                 v=-1;
