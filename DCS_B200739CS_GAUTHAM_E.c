@@ -153,19 +153,56 @@ void PRINT_LIST(sll ll){
     printf("\n");
 }
 
+void swap(int arr[],int a,int b){
+    int temp;
+    temp=arr[a];
+    arr[a]=arr[b];
+    arr[b]=temp;
+}
+
 void dfs(graph g,int pos,int list[],int n){
     list[pos]=1;
     for(int i=0;i<n;i++){
-        if(list[i]==0 && g->arr[pos][i]==1){
+        if(list[i]==0 && g->arr[pos][i]>=1){
             dfs(g,i,list,n);
         }
+    }
+}
+
+void dfs1(graph g,int inpos,int pos,int list[],int n,int arr1[]){
+    list[pos]=1;
+    for(int i=inpos;i<n+inpos;i++){
+        if(list[i-inpos]==0 && g->arr[arr1[pos+inpos]][i]>=1){
+            dfs1(g,inpos,i-inpos,list,n,arr1);
+        }
+    }
+}
+
+bool conmid(graph g,int inpos,int n,int arr1[]){
+    int list[n-inpos];
+    for(int i=0;i<n-inpos;i++){
+        list[i]=0;
+    }
+    dfs1(g,inpos,0,list,n-inpos,arr1);
+    int flag=0;
+    for(int i=0;i<n-inpos;i++){
+        if(list[i]==0){
+            flag=1;
+            break;
+        }
+    }
+    if (flag==0){
+        return true;
+    }
+    else{
+        return false;
     }
 }
 
 bool grcon(graph g,int n){
     int list[n];
     for(int i=0;i<n;i++){
-        list[i]=1;
+        list[i]=0;
     }
     dfs(g,0,list,n);
     int flag=0;
@@ -213,7 +250,76 @@ bool euler(graph g,int n){
     }
 }
 
-void solve(graph g,graph temp,int x,int n,sll ll,int no){
+void solve1(graph g,graph temp,int x,int n,int no,int arr1[],int ed[]){
+    int y=arr1[n-x];
+    int u=-1;
+    for(int i=0;i<n;i++){
+        for(int j=0;j<ed[i];j++){
+            if(i==y){
+                continue;
+            }
+            if(u==-1){
+                u=i;
+            }
+            else{
+                g->arr[i][u]--;
+                g->arr[u][i]--;
+                u=-1;
+            }
+        }
+    }
+    for(int i=0;i<n;i++){
+        g->arr[y][i]=ed[i];
+        if(g->arr[y][i]>=1){
+            g->arr[i][y]=ed[i];
+        }
+    }
+    for(int i=n-x+1;i<n;i++){
+        if(conmid(g,n-x+1,n,arr1)==true){
+            break;
+        }
+        else{
+            swap(arr1,n-x,i);
+        }
+    }
+    y=arr1[n-x];
+    //we go again
+    for(int i=0;i<n;i++){
+        ed[i]=0;
+    }
+    // removing the edges connected with y
+    // all the elemnts corresponding to x will be 0
+    for(int i=0;i<n;i++){
+        ed[i]=g->arr[y][i];
+        if(g->arr[y][i]>=1){
+            g->arr[y][i]=0;
+            g->arr[i][y]=0;
+        }
+    }
+    for(int i=0;i<n;i++){
+        temp->arr[y][i]=ed[i];
+    }
+    // adding required edges
+    u=-1;
+    for(int i=0;i<n;i++){
+        for(int j=0;j<ed[i];j++){
+            if(i==y){
+                continue;
+            }
+            if(u==-1){
+                u=i;
+            }
+            else{
+                g->arr[i][u]++;
+                g->arr[u][i]++;
+                u=-1;
+            }
+        }
+    }
+    return;
+}
+
+void solve(graph g,graph temp,int x,int n,sll ll,int no,int arr1[]){
     if (x==1){
         int q=g->arr[n-1][n-1];
         for(int i=0;i<q/2;i++){
@@ -226,7 +332,7 @@ void solve(graph g,graph temp,int x,int n,sll ll,int no){
         }
         return;
     }
-    int y=n-x;
+    int y=arr1[n-x];
     int ed[n];
     for(int i=0;i<n;i++){
         ed[i]=0;
@@ -260,8 +366,12 @@ void solve(graph g,graph temp,int x,int n,sll ll,int no){
             }
         }
     }
+    if(conmid(g,n-x+1,n,arr1)==false){
+        solve1(g,temp,x,n,no,arr1,ed);
+    }
     // new graph g' of adj matrix by removing first row and first column 
-    solve(g,temp,x-1,n,ll,no);
+    solve(g,temp,x-1,n,ll,no,arr1);
+    y=arr1[n-x];
     int newarr[n];
     for(int i=0;i<n;i++){
         newarr[i]=0;
@@ -361,8 +471,12 @@ int main(){
         printf("Not Eulerian\n");
         return 0;
     }
+    int arr1[n];
+    for(int i=0;i<n;i++){
+        arr1[i]=i;
+    }
     sll ll=(sll)malloc(sizeof(sll));
-    solve(g,temp,n,n,ll,0);
+    solve(g,temp,n,n,ll,0,arr1);
     PRINT_LIST(ll);
     return 0;
 }
