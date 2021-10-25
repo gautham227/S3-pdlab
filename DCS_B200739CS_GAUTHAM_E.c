@@ -10,6 +10,149 @@ struct grap{
 };
 typedef struct grap* graph;
 
+//linked list
+struct nod{
+    int key1;
+    int key2;
+    struct nod* next;
+};
+typedef struct nod* node;
+
+struct sl{
+    node head;
+};
+typedef struct sl* sll;
+
+node CREATE_NODE(int k1,int k2){
+    node ne;
+    ne=(node)malloc(sizeof(node));
+    ne->key1=k1;
+    ne->key2=k2;
+    ne->next=NULL;
+    return ne;
+}
+
+node LIST_SEARCH_LAST(sll ll,int k1,int k2){
+    node present, ret;
+    present=ll->head;
+    int flag=0;
+    while(present!=NULL){
+        if(present->key1==k1 && present->key2==k2){
+            flag=1;
+            ret = present;
+            present=present->next;
+        }
+        else{
+            present=present->next;
+        }
+    }
+    if(flag==0){
+        return NULL;
+    }
+    else{
+        return ret;
+    }
+}
+
+node LIST_SEARCH_FRONT(sll ll,int k1,int k2){
+    node present;
+    present=ll->head;
+    int flag=0;
+    while(present!=NULL){
+        if(present->key1==k1 && present->key2==k2){
+            flag=1;
+            return present;
+            break;
+        }
+        else{
+            present=present->next;
+        }
+    }
+    if(flag==0){
+        return NULL;
+    }
+    else{
+        return present;
+    }
+}
+
+node LIST_SEARCH_LOOPS(sll ll,int k1,int k2){
+    node present;
+    present=ll->head;
+    int flag=0;
+    while(present!=NULL){
+        if((present->key1==k1 && present->key2==k2) && ( present->next==NULL||(present->next->key1!=k1 && present->next->key2!=k2))) {
+            flag=1;
+            return present;
+            break;
+        }
+        else{
+            present=present->next;
+        }
+    }
+    if(flag==0){
+        return NULL;
+    }
+    else{
+        return present;
+    }
+}
+
+void LIST_INSERT_FRONT(sll ll,int k1,int k2){
+    node ne;
+    ne=CREATE_NODE(k1,k2);
+    ne->next=ll->head;
+    ll->head=ne;
+}
+
+int LIST_INSERT_AFTER(sll ll,int k1,int k2, int n1,int n2){
+    node y,x;
+    y=LIST_SEARCH_FRONT(ll,k1,k2);
+    if(y!=NULL){
+        x=CREATE_NODE(n1,n2);
+        x->next=y->next;
+        y->next=x;
+        return 1;
+    }
+    else{
+        return 0;
+    }
+    return 0;
+}
+
+int LIST_INSERT_AFTER_LOOPS(sll ll,int k1,int k2, int n1,int n2){
+    node y,x;
+    y=LIST_SEARCH_LOOPS(ll,k1,k2);
+    if(y!=NULL){
+        x=CREATE_NODE(n1,n2);
+        x->next=y->next;
+        y->next=x;
+        return 1;
+    }
+    else{
+        return 0;
+    }
+    return 0;
+}
+
+
+void PRINT_LIST(sll ll){
+    node present;
+    present=ll->head;
+    if(ll->head==NULL){
+        printf("NULL\n");
+        return;
+    }
+    while(present!=NULL){
+        int ans1,ans2;
+        ans1=present->key1;
+        ans2=present->key2;
+        printf("%d %d\n",ans1,ans2);
+        present=present->next;
+    }
+    printf("\n");
+}
+
 void dfs(graph g,int pos,int list[],int n){
     list[pos]=1;
     for(int i=0;i<n;i++){
@@ -70,8 +213,17 @@ bool euler(graph g,int n){
     }
 }
 
-void solve(graph g,int x,int n,int pos1[],int pos2[],int no){
+void solve(graph g,graph temp,int x,int n,sll ll,int no){
     if (x==1){
+        int q=g->arr[n-1][n-1];
+        for(int i=0;i<q/2;i++){
+            if (i==0){
+                LIST_INSERT_FRONT(ll,n-1,n-1);
+            }
+            else{
+                LIST_INSERT_AFTER(ll,n-1,n-1,n-1,n-1);
+            }
+        }
         return;
     }
     int y=n-x;
@@ -87,6 +239,9 @@ void solve(graph g,int x,int n,int pos1[],int pos2[],int no){
             g->arr[y][i]=0;
             g->arr[i][y]=0;
         }
+    }
+    for(int i=0;i<n;i++){
+        temp->arr[y][i]=ed[i];
     }
     // adding required edges
     int u=-1;
@@ -106,23 +261,73 @@ void solve(graph g,int x,int n,int pos1[],int pos2[],int no){
         }
     }
     // new graph g' of adj matrix by removing first row and first column 
-    solve(g,x-1,n,pos1,pos2,no);
-    
+    solve(g,temp,x-1,n,ll,no);
+    int newarr[n];
+    for(int i=0;i<n;i++){
+        newarr[i]=0;
+    }
+    for(int i=0;i<n;i++){
+        newarr[i]=temp->arr[y][i];
+    }
+    u=-1;
+    int v=-1;
+    for(int i=0;i<n;i++){
+        if(i==y){
+            continue;
+        }
+        for(int j=0;j<newarr[i];j++){
+            if(u==-1){
+                u=i;
+            }
+            else{
+                v=i;
+                g->arr[u][v]--;
+                g->arr[v][u]--;
+                g->arr[u][y]++;
+                g->arr[y][u]++;
+                g->arr[v][y]++;
+                g->arr[y][v]++;
+                node p=LIST_SEARCH_LAST(ll,u,v);
+                if (p==NULL){
+                    p=LIST_SEARCH_LAST(ll,v,u);
+                }
+                p->key1=u;
+                p->key2=y;
+                if(newarr[y]>0){
+                    for(int i=0;i<newarr[y]/2;i++){
+                    LIST_INSERT_AFTER(ll,u,y,y,y);
+                    }
+                    newarr[y]=0;
+                    node xyz=LIST_SEARCH_LOOPS(ll,y,y);
+                    LIST_INSERT_AFTER_LOOPS(ll,y,y,y,v);
+                }
+                else{
+                    LIST_INSERT_AFTER(ll,u,y,y,u);
+                }
+                u=-1;
+                v=-1;
+            }
+        }
+    }
 }
 
 int main(){
     int n;
     scanf("%d",&n);
     // making the adj matrix of size n by n
-    graph g;
+    graph g,temp;
     g=(graph)malloc(sizeof(struct grap));
     g->arr=(int**)malloc(n*sizeof(int*));
+    temp=(graph)malloc(sizeof(struct grap));
+    temp->arr=(int**)malloc(n*sizeof(int*));
     for(int i=0;i<n;i++){
         g->arr[i]=(int*)malloc(n*sizeof(int));
+        temp->arr[i]=(int*)malloc(n*sizeof(int));
     }
     for(int i=0;i<n;i++){
         for(int j=0;j<n;j++){
             g->arr[i][j]=0;
+            temp->arr[i][j]=0;
         }
     }
 
@@ -140,10 +345,8 @@ int main(){
         printf("Not Eulerian\n");
         return 0;
     }
-    else{
-        printf("yes");
-    }
-    int pos1[n];
-    int pos2[n];
-    solve(g,n,n,pos1,pos2,0);
+    sll ll=(sll)malloc(sizeof(sll));
+    solve(g,temp,n,n,ll,0);
+    PRINT_LIST(ll);
+    return 0;
 }
