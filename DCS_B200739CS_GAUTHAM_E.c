@@ -302,13 +302,14 @@ void solve(graph g,graph temp,int x,int n,sll ll,int no){
                     LIST_INSERT_AFTER_LOOPS(ll,y,y,y,v);
                 }
                 else{
-                    LIST_INSERT_AFTER(ll,u,y,y,u);
+                    LIST_INSERT_AFTER(ll,u,y,y,v);
                 }
                 u=-1;
                 v=-1;
             }
         }
     }
+    return;
 }
 
 int main(){
