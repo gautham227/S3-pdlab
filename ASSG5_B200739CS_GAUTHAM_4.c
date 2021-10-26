@@ -77,6 +77,7 @@ void DEQUEUE(queue Q){
 int main(){
     int n;
     scanf("%d",&n);
+    n=n-1;
     queue q;
     q=(queue)malloc(sizeof(struct queu));
     q->arr=(char**)malloc(n*sizeof(char*));
@@ -86,12 +87,12 @@ int main(){
     q->size=n;
     q->head=-1;
     char c='a';
+    char s[21];
     while(c!='t'){
         scanf("%c",&c);
         switch (c)
         {
         case 'i':
-            char s[21];
             scanf(" %s",&s);
             ENQUEUE(q,s);
             break;
