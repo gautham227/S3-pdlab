@@ -48,7 +48,7 @@ node LIST_SEARCH(sll ll,char k){
 void LIST_INSERT_FRONT(sll ll,node x){
     node ne;
     char no;
-    scanf("%c",&no);
+    scanf(" %c",&no);
     ne=CREATE_NODE(no);
     ne->next=ll->head;
     ll->head=ne;
@@ -57,7 +57,7 @@ void LIST_INSERT_FRONT(sll ll,node x){
 void LIST_INSERT_TAIL(sll ll,node x){
     node ne;
     char no;
-    scanf("%c",&no);
+    scanf(" %c",&no);
     ne=CREATE_NODE(no);
     node present;
     present=ll->head;
@@ -75,8 +75,8 @@ void LIST_INSERT_TAIL(sll ll,node x){
 void LIST_INSERT_AFTER(sll ll,node x,node y){
     char nekey;
     char keybef;
-    scanf("%c ",&nekey);
-    scanf("%c",&keybef);
+    scanf(" %c ",&nekey);
+    scanf(" %c",&keybef);
     y=LIST_SEARCH(ll,keybef);
     if(y!=NULL){
         x=CREATE_NODE(nekey);
@@ -91,8 +91,8 @@ void LIST_INSERT_AFTER(sll ll,node x,node y){
 void LIST_INSERT_BEFORE(sll ll, node x, node y){
     char nekey;
     char keyaft;
-    scanf("%c ",&nekey);
-    scanf("%c",&keyaft);
+    scanf(" %c ",&nekey);
+    scanf(" %c",&keyaft);
     y=LIST_SEARCH(ll,keyaft);
     if(y==NULL){
         exit(0);
@@ -115,7 +115,7 @@ void LIST_INSERT_BEFORE(sll ll, node x, node y){
 
 void LIST_DELETE(sll ll,node x){
     char key;
-    scanf("%c",&key);
+    scanf(" %c",&key);
     x=LIST_SEARCH(ll,key);
     if (x==NULL){
         printf("%d\n",-1);
@@ -229,7 +229,7 @@ int main(){
     ll=(sll)malloc(sizeof(sll));
     char c='a';
     while(c!='e'){
-        scanf("%c ",&c);
+        scanf("%c",&c);
         switch (c)
         {
         case 'f':
