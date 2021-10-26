@@ -73,12 +73,12 @@ int main(){
     s->size=n;
     s->top=-1;
     char c='a';
+    char k;
     while(c!='t'){
         scanf("%c",&c);
         switch (c)
         {
         case 'i':
-            char k;
             PUSH(s,k);
             break;
         case 'd':
