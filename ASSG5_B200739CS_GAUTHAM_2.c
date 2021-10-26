@@ -258,6 +258,7 @@ int main(){
     node y;
     ll=(dll)malloc(sizeof(dll));
     char c='a';
+    int k;
     while(c!='e'){
         scanf("%c ",&c);
         switch (c)
@@ -284,7 +285,6 @@ int main(){
             LIST_DELETE_LAST(ll);
             break;
         case 'r':
-            int k;
             scanf("%d",&k);
             PRINT_REVERSE(ll,k);
             break;
