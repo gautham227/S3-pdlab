@@ -50,7 +50,7 @@ node LIST_SEARCH(dll ll,long int k){
 void LIST_INSERT_FRONT(dll ll,node x){
     node ne;
     long int no;
-    scanf("%ld",&no);
+    scanf(" %ld",&no);
     ne=CREATE_NODE(no);
     ne->next=ll->head;
     ne->prev=NULL;
@@ -63,7 +63,7 @@ void LIST_INSERT_FRONT(dll ll,node x){
 void LIST_INSERT_TAIL(dll ll,node x){
     node ne;
     long int no;
-    scanf("%ld",&no);
+    scanf(" %ld",&no);
     ne=CREATE_NODE(no);
     node present;
     present=ll->head;
@@ -83,8 +83,8 @@ void LIST_INSERT_TAIL(dll ll,node x){
 void LIST_INSERT_AFTER(dll ll,node x,node y){
     long int nekey;
     long int keybef;
-    scanf("%ld ",&nekey);
-    scanf("%ld",&keybef);
+    scanf(" %ld ",&nekey);
+    scanf(" %ld",&keybef);
     y=LIST_SEARCH(ll,keybef);
     if(y!=NULL){
         x=CREATE_NODE(nekey);
@@ -103,8 +103,8 @@ void LIST_INSERT_AFTER(dll ll,node x,node y){
 void LIST_INSERT_BEFORE(dll ll, node x, node y){
     long int nekey;
     long int keyaft;
-    scanf("%ld ",&nekey);
-    scanf("%ld",&keyaft);
+    scanf(" %ld ",&nekey);
+    scanf(" %ld",&keyaft);
     y=LIST_SEARCH(ll,keyaft);
     if(y==NULL){
         exit(0);
@@ -126,7 +126,7 @@ void LIST_INSERT_BEFORE(dll ll, node x, node y){
 
 void LIST_DELETE(dll ll,node x){
     long int key;
-    scanf("%ld",&key);
+    scanf(" %ld",&key);
     x=LIST_SEARCH(ll,key);
     if (x==NULL){
         printf("Not Found\n");
@@ -260,7 +260,7 @@ int main(){
     char c='a';
     int k;
     while(c!='e'){
-        scanf("%c ",&c);
+        scanf("%c",&c);
         switch (c)
         {
         case 'f':
