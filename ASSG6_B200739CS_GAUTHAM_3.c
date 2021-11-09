@@ -25,7 +25,7 @@ bool STACK_EMPTY(sll s){
     }
 }
 
-stack CREATE_NODE(int k){
+stack CREATE_NODE(char k){
     stack x;
     x=(stack)malloc(sizeof(struct stac));
     x->n=k;
