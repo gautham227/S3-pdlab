@@ -6,7 +6,7 @@
 #include<stdbool.h>
 
 struct stac{
-    int n;
+    long int n;
     struct stac* next;
 };
 typedef struct stac* stack;
@@ -25,7 +25,7 @@ bool STACK_EMPTY(sll s){
     }
 }
 
-stack CREATE_NODE(int k){
+stack CREATE_NODE(long int k){
     stack x;
     x=(stack)malloc(sizeof(struct stac));
     x->n=k;
@@ -33,7 +33,7 @@ stack CREATE_NODE(int k){
     return x;
 }
 
-void PUSH(sll s,int n){
+void PUSH(sll s,long int n){
     stack t;
     t=CREATE_NODE(n);
     if(s->head!=NULL){
@@ -45,13 +45,13 @@ void PUSH(sll s,int n){
     }
 }
 
-char POP(sll s){
+long int POP(sll s){
     bool x=STACK_EMPTY(s);
     if (x==true){
         return '0';
     }
     stack present;
-    int b=s->head->n;
+    long int b=s->head->n;
     present=s->head;
     if (present->next==NULL){
         s->head=NULL;
@@ -67,27 +67,27 @@ sll EVALUATE_POSTFIX(char* e){
     int i=0;
     while(i<strlen(e)){
         if(e[i]=='+'){
-            int a=POP(s);
-            int b=POP(s);
+            long int a=POP(s);
+            long int b=POP(s);
             PUSH(s,a+b);
         }
         else if(e[i]=='-'){
-            int a=POP(s);
-            int b=POP(s);
+            long int a=POP(s);
+            long int b=POP(s);
             PUSH(s,b-a);
         }
         else if(e[i]=='*'){
-            int a=POP(s);
-            int b=POP(s);
+            long int a=POP(s);
+            long int b=POP(s);
             PUSH(s,a*b);
         }
         else if(e[i]=='/'){
-            int a=POP(s);
-            int b=POP(s);
+            long int a=POP(s);
+            long int b=POP(s);
             PUSH(s,b/a);
         }
         else if(e[i]>='0' && e[i]<='9'){
-            int u=0;
+            long int u=0;
             while(e[i]!=' '){
                 u=u*10+(e[i]-48);
                 i++;
@@ -100,8 +100,8 @@ sll EVALUATE_POSTFIX(char* e){
 }
 
 int main(){
-    char e[100000];
-    fgets(e,100000,stdin);
+    char e[1000];
+    fgets(e,1000,stdin);
     sll s=EVALUATE_POSTFIX(e);
     printf("%d\n",s->head->n);
     return 0;

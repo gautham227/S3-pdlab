@@ -51,9 +51,9 @@ void PUSH(sll s,char n, stack a, stack b){
 
 stack POP(sll s){
     bool x=STACK_EMPTY(s);
-    // if (x==true){
-    //     return '0';
-    // }
+    if (x==true){
+        return NULL;
+    }
     stack present;
     stack b=s->head;
     present=s->head;
