@@ -321,13 +321,13 @@ void solve1(graph g,graph temp,int x,int n,int no,int arr1[],int ed[]){
 
 void solve(graph g,graph temp,int x,int n,sll ll,int no,int arr1[]){
     if (x==1){
-        int q=g->arr[n-1][n-1];
+        int q=g->arr[arr1[n-1]][arr1[n-1]];
         for(int i=0;i<q/2;i++){
             if (i==0){
-                LIST_INSERT_FRONT(ll,n-1,n-1);
+                LIST_INSERT_FRONT(ll,arr1[n-1],arr1[n-1]);
             }
             else{
-                LIST_INSERT_AFTER(ll,n-1,n-1,n-1,n-1);
+                LIST_INSERT_AFTER(ll,arr1[n-1],arr1[n-1],arr1[n-1],arr1[n-1]);
             }
         }
         return;
