@@ -29,6 +29,81 @@ node CREATE_NODE(int k){
     return x;
 }
 
+node SEARCH(tree t,int k){
+    node present;
+    present=t->root;
+    while(present!=NULL && present->key!=k){
+        if(present->key>k){
+            present=present->left;
+        }
+        else{
+            present=present->right;
+        }
+    }
+    return present;
+}
+
+node MINIMUM(node a){
+    while(a->left!=NULL){
+        a=a->left;
+    }
+    return a;
+}
+
+node MAXIMUM(node a){
+    while(a->right!=NULL){
+        a=a->right;
+    }
+    return a;
+}
+
+void SUCCESSOR(tree t, int k){
+    node present;
+    present=SEARCH(t,k);
+    if(present->right!=NULL){
+        node cur1=MINIMUM(present->right);
+        printf("%d\n",cur1->key);
+        return;
+    }
+    node p;
+    p=present->par;
+    while(p!=NULL && present==p->right){
+        present=p;
+        p=p->par;
+    }
+    if(p==NULL){
+        printf("%d\n",-1);
+    }
+    else{
+        printf("%d\n",p->key);
+    }
+}
+
+void PREDECESSOR(tree t, int k){
+    node present;
+    present=SEARCH(t,k);
+    if(present->left!=NULL){
+        while(present->right!=NULL){
+            present=present->right;
+        }
+        printf("%d\n",present->key);
+    }
+    else{
+        node p;
+        p=present->par;
+        while(p!=NULL && present==p->left){
+            present=p;
+            p=p->par;
+        }
+        if(p==NULL){
+            printf("%d\n",-1);
+        }
+        else{
+            printf("%d\n",p->key);
+        }
+    }
+}
+
 void INSERT(tree t, int k){
     node a;
     a=CREATE_NODE(k);
@@ -56,57 +131,45 @@ void INSERT(tree t, int k){
     }
 }
 
-node SEARCH(tree t,int k){
-    node present;
-    present=t->root;
-    while(present!=NULL && present->key!=k){
-        if(present->key>k){
-            present=present->left;
-        }
-        else{
-            present=present->right;
-        }
+void TRANSPLANT(tree t, node a, node b){
+    if(a->par==NULL){
+        t->root=b;
     }
-    return present;
-}
-
-void SUCCESSOR(tree t, int k){
-    node present;
-    present=SEARCH(t,k);
-    if(present->right!=NULL){
-        while(present->left!=NULL){
-            present=present->left;
-        }
-        printf("%d\n",present->key);
+    else if(a==a->par->left){
+        a->par->left=b;
     }
     else{
-        node p;
-        p=present->par;
-        while(p!=NULL && present!=p->right){
-            present=p;
-            p=p->par;
-        }
-        printf("%d\n",p->key);
+        a->par->right=b;
     }
+    if(b!=NULL){
+        b->par=a->par;
+    }
+    return;
 }
 
-void PREDECESSOR(tree t, int k){
-    node present;
-    present=SEARCH(t,k);
-    if(present->left!=NULL){
-        while(present->right!=NULL){
-            present=present->right;
-        }
-        printf("%d\n",present->key);
+void DELETE(tree t, int k){
+    node present=SEARCH(t,k);
+    if(present==NULL){
+        printf("%d\n",-1);
+        return;
+    }
+    printf("%d\n",present->key);
+    if(present->left==NULL){
+        TRANSPLANT(t,present,present->right);
+    }
+    else if(present->right==NULL){
+        TRANSPLANT(t,present,present->left);
     }
     else{
-        node p;
-        p=present->par;
-        while(p!=NULL && present!=p->left){
-            present=p;
-            p=p->par;
+        node cur=MINIMUM(present->right);
+        if(cur->par!=present){
+            TRANSPLANT(t,cur,cur->right);
+            cur->right=present->right;
+            cur->right->par=cur;
         }
-        printf("%d\n",p->key);
+        TRANSPLANT(t,present,cur);
+        cur->left=present->left;
+        cur->left->par=cur;
     }
 }
 
@@ -139,6 +202,7 @@ int main(){
     t=(tree)malloc(sizeof(struct tre));
     char c='b';
     int k;
+    node ptr;
     while(c!='e'){
         scanf("%c",&c);
         switch (c)
@@ -153,7 +217,13 @@ int main(){
             break;
         case 's':
             scanf(" %d",&k);
-            SEARCH(t,k);
+            ptr=SEARCH(t,k);
+            if(ptr==NULL){
+                printf("%d\n",-1);
+            }
+            else{
+                printf("%d\n",1);
+            }
             break;
         case 'c':
             scanf(" %d",&k);
@@ -164,16 +234,16 @@ int main(){
             PREDECESSOR(t,k);
             break;
         case 'i':
-            INORDER(t);
-            print("\n");
+            INORDER(t->root);
+            printf("\n");
             break;
         case 'p':
-            PREORDER(t);
-            print("\n");
+            PREORDER(t->root);
+            printf("\n");
             break;
         case 't':
-            POSTORDER(t);
-            print("\n");
+            POSTORDER(t->root);
+            printf("\n");
             break;
         case 'e':
             break;
