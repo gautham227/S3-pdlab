@@ -403,14 +403,20 @@ void solve(graph g,graph temp,int x,int n,sll ll,int no,int arr1[]){
                     p->key2=y;
                     if(newarr[y]>0){
                         for(int i=0;i<newarr[y]/2;i++){
-                            LIST_INSERT_AFTER(ll,u,y,y,y);
+                            node qw=CREATE_NODE(y,y);
+                            qw->next=p->next;
+                            p->next=qw;
+                            p=qw;
                         }
                         newarr[y]=0;
-                        node xyz=LIST_SEARCH_LOOPS(ll,y,y);
-                        LIST_INSERT_AFTER_LOOPS(ll,y,y,y,v);
+                        node rw=CREATE_NODE(y,v);
+                        rw->next=p->next;
+                        p->next=rw;
                     }
                     else{
-                        LIST_INSERT_AFTER(ll,u,y,y,v);
+                        node uv=CREATE_NODE(y,v);
+                        uv->next=p->next;
+                        p->next=uv;
                     }
                 }
                 else{
