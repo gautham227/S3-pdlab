@@ -60,6 +60,10 @@ node MAXIMUM(node a){
 void SUCCESSOR(tree t, int k){
     node present;
     present=SEARCH(t,k);
+    if(present==NULL){
+        printf("%d\n",-1);
+        return;
+    }
     if(present->right!=NULL){
         node cur1=MINIMUM(present->right);
         printf("%d\n",cur1->key);
@@ -82,11 +86,13 @@ void SUCCESSOR(tree t, int k){
 void PREDECESSOR(tree t, int k){
     node present;
     present=SEARCH(t,k);
+    if(present==NULL){
+        printf("%d\n",-1);
+        return;
+    }
     if(present->left!=NULL){
-        while(present->right!=NULL){
-            present=present->right;
-        }
-        printf("%d\n",present->key);
+        node cur1=MAXIMUM(present->left);
+        printf("%d\n",cur1->key);
     }
     else{
         node p;
@@ -225,20 +231,20 @@ int main(){
                 printf("%d\n",1);
             }
             break;
-        case 'c':
-            scanf(" %d",&k);
-            SUCCESSOR(t,k);
-            break;
         case 'r':
             scanf(" %d",&k);
             PREDECESSOR(t,k);
             break;
-        case 'i':
-            INORDER(t->root);
-            printf("\n");
+        case 'c':
+            scanf(" %d",&k);
+            SUCCESSOR(t,k);
             break;
         case 'p':
             PREORDER(t->root);
+            printf("\n");
+            break;
+        case 'i':
+            INORDER(t->root);
             printf("\n");
             break;
         case 't':
